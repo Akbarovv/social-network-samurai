@@ -1,0 +1,40 @@
+.nav {
+    grid-area: n;
+    background-color: #ff0000;
+    padding: 20px;
+}
+
+.items a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.items a.activeLink {
+    color: gold;
+}
+
+.sidebar {
+    margin-top: 50px;
+    text-align: left;
+    text-decoration: none;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding-bottom: 20px;
+}
+
+.sidebar a.activeLink {
+    color: gold;
+}
+
+.sidebar img {
+
+    height: 40px;
+    float: left;
+    width: 20.5%;
+   
+
+    padding-top: 20px;
+}
