@@ -1,3 +1,5 @@
+import {ChangeEvent} from "react";
+
 export type PostsType = {
     id: number
     message: string
@@ -26,13 +28,24 @@ export type RootStateType = {
 
 export type StoreType = {
     _state: RootStateType
-    updateNewPostText: (newTextElement: string) => void
-    subscribe: (observer: () => void) => void
-    addPost: () => void
     _renderEntireTree: () => void
+    // updateNewPostText: (newTextElement: string) => void
+    subscribe: (observer: () => void) => void
+    // addPost: () => void
     getState: () => RootStateType
-
+    dispatch: (action: ActionsTypes) => void
 }
+export const addPostActionCreator = () => ({
+        type: 'ADD-POST'
+    }as const)
+
+export const updateNewPostActionCreator = (newText: string) => ({
+        type: "UPDATE-NEW-POST-TEXT", newTextElement: newText
+    }as const)
+
+
+
+export  type ActionsTypes =  ReturnType<typeof addPostActionCreator> | ReturnType<typeof updateNewPostActionCreator>
 export const store: StoreType = {
     _state: {
         profilePage: {
@@ -56,27 +69,29 @@ export const store: StoreType = {
 
 
     },
-    updateNewPostText(newTextElement: string) {
-        this._state.profilePage.newPostText = newTextElement
-        this._renderEntireTree();
+    _renderEntireTree() {
+        console.log('console is changed')
     },
     subscribe(observer) {
         this._renderEntireTree = observer
     },
-    addPost() {
-        const newPost: PostsType = {
-            id: 5,
-            message: this._state.profilePage.newPostText,
-            likesCount: 0
-        }
-        this._state.profilePage.posts.push(newPost)
-        this._renderEntireTree();
-    },
-    _renderEntireTree() {
-        console.log('console is changed')
-    },
     getState() {
         return this._state
+    },
+    dispatch(action) {
+        if (action.type === 'ADD-POST') {
+            const newPost: PostsType = {
+                id: 5,
+                message: this.getState().profilePage.newPostText,
+                likesCount: 0
+            }
+            this._state.profilePage.posts.push(newPost)
+            this._renderEntireTree();
+        } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
+            debugger
+            this._state.profilePage.newPostText = action.newTextElement
+            this._renderEntireTree();
+        }
     }
 }
 

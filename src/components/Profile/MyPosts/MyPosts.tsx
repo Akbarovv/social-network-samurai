@@ -1,28 +1,26 @@
 import React, {ChangeEvent} from "react";
 import s from "./MyPosts.module.css"
 import Post from "./Post";
-
-import {PostsType,} from "../../../redux/state";
+import {ActionsTypes, addPostActionCreator, PostsType, updateNewPostActionCreator,} from "../../../redux/state";
 
 type MyPostsType = {
     posts: Array<PostsType>
-    addPost: (message: string) => void
     newPostText: string
-    updateNewPostText: (newPostText: string) => void
+    dispatch: (action: ActionsTypes) => void
+
 }
+
 const MyPosts = (props: MyPostsType) => {
 
     const postsElements = props.posts.map(p => <Post id={p.id} message={p.message} likesCount={p.likesCount}/>)
 
     const addPost = () => {
-        props.addPost(props.newPostText)
-        props.updateNewPostText('')
+        props.dispatch(addPostActionCreator())
+        props.dispatch(updateNewPostActionCreator(''))
     }
 
-    const onPostChange = (event: ChangeEvent<HTMLTextAreaElement>)=> {
-        props.updateNewPostText(event.target.value)
-
-
+    const onPostChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(updateNewPostActionCreator(event.currentTarget.value))
 
     }
     return (
@@ -31,8 +29,9 @@ const MyPosts = (props: MyPostsType) => {
                 <h3>my posts</h3>
                 <div>
                     <div>
-                        <textarea  value={props.newPostText}
-                        onChange={onPostChange}/>
+                        <textarea
+                            value={props.newPostText}
+                            onChange={onPostChange}/>
                     </div>
                     <div>
                         <button onClick={addPost}>Add post</button>
