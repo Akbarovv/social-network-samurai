@@ -1,4 +1,6 @@
-import {ChangeEvent} from "react";
+const UPDATE_NEW_MESSAGE_BODY = 'UPDATE_NEW_MESSAGE_BODY'
+const SEND_MESSAGE = 'SEND_NEW_MESSAGE_BODY'
+
 
 export type PostsType = {
     id: number
@@ -16,6 +18,9 @@ export type MessagesType = {
 export type MessagePageType = {
     dialogs: Array<DialogsType>
     messages: Array<MessagesType>
+    newMessageBody: string
+
+
 }
 export type ProfilePageType = {
     posts: Array<PostsType>
@@ -24,28 +29,22 @@ export type ProfilePageType = {
 export type RootStateType = {
     profilePage: ProfilePageType
     messagePage: MessagePageType
+
 }
 
 export type StoreType = {
     _state: RootStateType
     _renderEntireTree: () => void
-    // updateNewPostText: (newTextElement: string) => void
     subscribe: (observer: () => void) => void
-    // addPost: () => void
     getState: () => RootStateType
     dispatch: (action: ActionsTypes) => void
 }
-export const addPostActionCreator = () => ({
-        type: 'ADD-POST'
-    }as const)
-
-export const updateNewPostActionCreator = (newText: string) => ({
-        type: "UPDATE-NEW-POST-TEXT", newTextElement: newText
-    }as const)
+export  type ActionsTypes = ReturnType<typeof addPostActionCreator>
+    | ReturnType<typeof updateNewPostActionCreator>
+    | ReturnType<typeof sendMessageCreator>
+    | ReturnType<typeof updateNewMessageBodyCreator>
 
 
-
-export  type ActionsTypes =  ReturnType<typeof addPostActionCreator> | ReturnType<typeof updateNewPostActionCreator>
 export const store: StoreType = {
     _state: {
         profilePage: {
@@ -64,7 +63,8 @@ export const store: StoreType = {
                 {id: 1, message: "Yo"},
                 {id: 2, message: "Yo"},
                 {id: 3, message: "Yo"},
-            ]
+            ],
+            newMessageBody: ""
         }
 
 
@@ -91,7 +91,28 @@ export const store: StoreType = {
             debugger
             this._state.profilePage.newPostText = action.newTextElement
             this._renderEntireTree();
+        } else if (action.type === UPDATE_NEW_MESSAGE_BODY) {
+            this._state.messagePage.newMessageBody = action.body
+            this._renderEntireTree();
+        } else if (action.type === SEND_MESSAGE) {
+            let body = this._state.messagePage.newMessageBody
+            this._state.messagePage.newMessageBody = ''
+            this._state.messagePage.messages.push({id: 5, message: body})
+            this._renderEntireTree();
         }
     }
 }
+export const addPostActionCreator = () => ({
+    type: 'ADD-POST'
+} as const)
+export const updateNewPostActionCreator = (newText: string) => ({
+    type: "UPDATE-NEW-POST-TEXT", newTextElement: newText
+} as const)
+
+export const sendMessageCreator = () => ({
+    type: SEND_MESSAGE
+} as const)
+export const updateNewMessageBodyCreator = (body: string) => ({
+    type: UPDATE_NEW_MESSAGE_BODY, body: body
+} as const)
 

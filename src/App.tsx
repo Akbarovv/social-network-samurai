@@ -15,6 +15,7 @@ type AppPropsType = {
     store: StoreType
     dispatch: (action: ActionsTypes) => void
 
+
 }
 const App: React.FC<AppPropsType> = (props) => {
     const state = props.store.getState()
@@ -24,7 +25,7 @@ const App: React.FC<AppPropsType> = (props) => {
                 <Header/>
                 <Navbar/>
                 <div className='app-wrapper-content'>
-                    <Route exact path='/dialogs' render={() => <Dialogs dialogs={state.messagePage}/>}/>
+                    <Route exact path='/dialogs' render={() => <Dialogs store={props.store}/>}/>
                     <Route path='/profile' render={() => <Profile posts={state.profilePage}
                                                                   dispatch={props.dispatch}
                                                                   />}/>
