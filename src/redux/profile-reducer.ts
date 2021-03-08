@@ -1,11 +1,10 @@
-import {PostsType, StoreType} from "./state";
+import {PostsType} from "./state";
 
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 
 
-
-const profileReducer = (state: any, action: any)  => {
+const profileReducer = (state: any, action: any) => {
     switch (action.type) {
         case ADD_POST:
             const newPost: PostsType = {
@@ -13,11 +12,11 @@ const profileReducer = (state: any, action: any)  => {
                 message: state.newPostText,
                 likesCount: 0
             }
-            state.profilePage.posts.push(newPost)
+            state.posts.push(newPost)
             return state;
 
         case UPDATE_NEW_POST_TEXT:
-            state.profilePage.newPostText = action.newTextElement
+            state.newPostText = action.newTextElement
             return state;
         default:
             return state;
