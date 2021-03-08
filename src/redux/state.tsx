@@ -1,6 +1,5 @@
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE_NEW_MESSAGE_BODY'
-const SEND_MESSAGE = 'SEND_NEW_MESSAGE_BODY'
-
+import profileReducer, {addPostActionCreator, updateNewPostActionCreator} from "./profile-reducer";
+import messagePageReducer, {sendMessageCreator, updateNewMessageBodyCreator} from "./message-page-reducer";
 
 export type PostsType = {
     id: number
@@ -79,40 +78,13 @@ export const store: StoreType = {
         return this._state
     },
     dispatch(action) {
-        if (action.type === 'ADD-POST') {
-            const newPost: PostsType = {
-                id: 5,
-                message: this.getState().profilePage.newPostText,
-                likesCount: 0
-            }
-            this._state.profilePage.posts.push(newPost)
-            this._renderEntireTree();
-        } else if (action.type === 'UPDATE-NEW-POST-TEXT') {
-            debugger
-            this._state.profilePage.newPostText = action.newTextElement
-            this._renderEntireTree();
-        } else if (action.type === UPDATE_NEW_MESSAGE_BODY) {
-            this._state.messagePage.newMessageBody = action.body
-            this._renderEntireTree();
-        } else if (action.type === SEND_MESSAGE) {
-            let body = this._state.messagePage.newMessageBody
-            this._state.messagePage.newMessageBody = ''
-            this._state.messagePage.messages.push({id: 5, message: body})
-            this._renderEntireTree();
-        }
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.messagePage = messagePageReducer(this._state.messagePage, action)
+        this._renderEntireTree();
+
     }
 }
-export const addPostActionCreator = () => ({
-    type: 'ADD-POST'
-} as const)
-export const updateNewPostActionCreator = (newText: string) => ({
-    type: "UPDATE-NEW-POST-TEXT", newTextElement: newText
-} as const)
 
-export const sendMessageCreator = () => ({
-    type: SEND_MESSAGE
-} as const)
-export const updateNewMessageBodyCreator = (body: string) => ({
-    type: UPDATE_NEW_MESSAGE_BODY, body: body
-} as const)
+
+
 
