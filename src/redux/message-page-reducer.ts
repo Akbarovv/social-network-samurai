@@ -1,12 +1,21 @@
 const UPDATE_NEW_MESSAGE_BODY = 'UPDATE_NEW_MESSAGE_BODY'
 const SEND_MESSAGE = 'SEND_NEW_MESSAGE_BODY'
 
-type messagePageReducerType = {
-    state: ()=> void
-    action: any
+const initialState = {
+    dialogs: [
+        {id: 1, name: "Java"},
+        {id: 2, name: "Asa"},
+        {id: 3, name: "Bob"},
+    ],
+    messages: [
+        {id: 1, message: "Yo"},
+        {id: 2, message: "Yo"},
+        {id: 3, message: "Yo"},
+    ],
+    newMessageBody: ""
 }
 
-const messagePageReducer = (state: any, action: any) => {
+const messagePageReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case UPDATE_NEW_MESSAGE_BODY:
             state.newMessageBody = action.body

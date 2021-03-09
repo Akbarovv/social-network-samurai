@@ -1,10 +1,16 @@
-import {PostsType} from "./state";
+import {PostsType} from "./store";
 
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 
+const initialState = {
+    posts: [
+        {id: 1, message: "Hi how are you", likesCount: 12},
+    ],
+    newPostText: "Asadbek"
+}
 
-const profileReducer = (state: any, action: any) => {
+const profileReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case ADD_POST:
             const newPost: PostsType = {
