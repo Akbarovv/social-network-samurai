@@ -2,28 +2,28 @@ import React, {ChangeEvent} from "react";
 import s from './Dialogs.module.css'
 import DialogItem from "./DialogsItem/DialogsItem";
 import Message from "./Message/Message";
-import {DialogsType, MessagePageType, MessagesType,} from "../../redux/store";
-import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/message-page-reducer";
+import {DialogsType, MessagesType,} from "../../redux/store";
 
 
 type DialogsPropsType = {
-    store: any
+    updateNewMessageBody: (body: any) => void
+    sendMessage: () => void
+    messagePage: any
 }
 
 const Dialogs = (props: DialogsPropsType) => {
-
-    let state = props.store.getState().messagePage
+    const state = props.messagePage
     let dialogsElements = state.dialogs.map((d: DialogsType) => <DialogItem key={d.id} name={d.name} id={d.id}/>
     )
     let messagesElements = state.messages.map((m: MessagesType) => <Message key={m.id} message={m.message}/>)
     let newMessageBody = state.newMessageBody
-    let onSendMessageClick= () => {
-        props.store.dispatch(sendMessageCreator())
+    let onSendMessageClick = () => {
+        props.sendMessage()
 
     }
-    let onNewMessageChange= (e:ChangeEvent<HTMLTextAreaElement>) => {
+    let onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         let body = e.target.value
-        props.store.dispatch(updateNewMessageBodyCreator(body))
+        props.updateNewMessageBody(body)
     }
     return (
         <div className={s.dialogs}>
@@ -33,7 +33,8 @@ const Dialogs = (props: DialogsPropsType) => {
             <div className={s.messages}>
                 <div>{messagesElements}</div>
                 <div>
-                    <div><textarea placeholder='Enter your message' value={newMessageBody} onChange={onNewMessageChange}/></div>
+                    <div><textarea placeholder='Enter your message' value={newMessageBody}
+                                   onChange={onNewMessageChange}/></div>
                     <div>
                         <button onClick={onSendMessageClick}>send</button>
                     </div>
